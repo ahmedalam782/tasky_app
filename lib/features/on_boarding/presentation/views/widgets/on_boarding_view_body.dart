@@ -1,14 +1,17 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:tasky_app/core/resources/color_manager.dart';
 import 'package:tasky_app/core/resources/font_manager.dart';
 import 'package:tasky_app/core/resources/styles_manager.dart';
 import 'package:tasky_app/core/resources/values_manager.dart';
+import 'package:tasky_app/core/utils/ui_utils.dart';
 import 'package:tasky_app/core/widgets/custom_button.dart';
-
+import 'package:tasky_app/features/auth/presentation/view_model/cubit/auth_cubit.dart';
+import 'package:tasky_app/features/auth/presentation/view_model/cubit/auth_states.dart';
 import '../../../../../core/resources/assets_manager.dart';
 import '../../../../../core/routes/routes.dart';
 
@@ -20,8 +23,11 @@ class OnBoardingViewBody extends StatefulWidget {
 }
 
 class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
+  late AuthCubit _authCubit;
+
   @override
   Widget build(BuildContext context) {
+    _authCubit = AuthCubit.get(context);
     return Stack(
       children: [
         Positioned(
@@ -66,15 +72,34 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
                         height: 1.8),
                   ),
                 ),
-                CustomButton(
-                  label: AppConstants.letsStart,
-                  onTap: () {
-                    Navigator.of(context).pushReplacementNamed(Routes.login);
+                BlocListener<AuthCubit, AuthStates>(
+                  listener: (context, state) {
+                    if (state is AccessTokenLoading) {
+                    } else if (state is AccessTokenSuccess) {
+                      Navigator.of(context).pushReplacementNamed(Routes.home);
+                    } else if (state is AccessTokenError) {
+                      Navigator.of(context).pushReplacementNamed(Routes.login);
+                    }
                   },
-                  suffixIcon: SvgPicture.asset(
-                    width: 24.w,
-                    height: 24.h,
-                    SvgAssets.assetsSvgArrowLeft,
+                  child: CustomButton(
+                    label: AppConstants.letsStart,
+                    onTap: () {
+                      Future.delayed(const Duration(microseconds: 0), () async {
+                        if (await _checkConnection() == false) {
+                          if (!mounted) return;
+                          // ignore: use_build_context_synchronously
+                          UiUtils.showConnectionDialog(context);
+                        } else {
+                          _authCubit.getRefreshToken();
+                          _authCubit.getNewAccessToken();
+                        }
+                      });
+                    },
+                    suffixIcon: SvgPicture.asset(
+                      width: 24.w,
+                      height: 24.h,
+                      SvgAssets.assetsSvgArrowLeft,
+                    ),
                   ),
                 )
               ],
@@ -83,5 +108,10 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
         ),
       ],
     );
+  }
+
+  Future<bool> _checkConnection() async {
+    bool result = await InternetConnection().hasInternetAccess;
+    return result;
   }
 }

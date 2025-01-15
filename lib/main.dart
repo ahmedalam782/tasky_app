@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +24,7 @@ Future<void> main() async {
         Platform.isIOS ? Brightness.light : Brightness.dark,
     // Dark text for status bar
   ));
+
   await ScreenUtil.ensureScreenSize();
   Bloc.observer = MyBlocObserver();
   await configureDependencies();
@@ -45,10 +45,10 @@ class TaskApp extends StatelessWidget {
         builder: (context) {
           return ScreenUtilInit(
             designSize: Size(designWidth, designHeight),
-            minTextAdapt: true,
+            minTextAdapt: false,
             splitScreenMode: true,
             builder: (context, child) => BlocProvider(
-              create: (context) => serviceLocator.get<AuthCubit>(),
+              create: (_) => serviceLocator.get<AuthCubit>(),
               child: MaterialApp(
                 onGenerateRoute: RouteGenerator.getRoute,
                 debugShowCheckedModeBanner: false,

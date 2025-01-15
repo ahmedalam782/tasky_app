@@ -1,16 +1,19 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import 'package:tasky_app/core/errors/exception.dart';
+import 'package:tasky_app/core/network/errors/exception.dart';
 import 'package:tasky_app/core/network/remote/api_consumer.dart';
 
 import 'package:tasky_app/core/network/remote/api_interceptors.dart';
+import 'package:tasky_app/features/auth/data/data_sources/local/auth_local_data_sources.dart';
 
 @Singleton(as: ApiConsumer)
 class DioConsumer implements ApiConsumer {
   final Dio dio;
-  DioConsumer(this.dio) {
+  final AuthLocalDataSources _authLocalDataSources;
+
+  DioConsumer(this.dio, this._authLocalDataSources) {
     dio.interceptors.add(
-      ApiInterceptors(),
+      ApiInterceptors(_authLocalDataSources),
     ); // For add token in request header of interceptors
     dio.interceptors.add(LogInterceptor(
       request: true,
@@ -109,6 +112,25 @@ class DioConsumer implements ApiConsumer {
         queryParameters: queryParameters,
       );
       return response.data;
+    } on DioException catch (e) {
+      ServerException.handleDioException(e);
+    }
+  }
+
+  @override
+  Future<dynamic> head(
+    String path, {
+    data,
+    Map<String, dynamic>? queryParameters,
+    bool isFormData = false,
+  }) async {
+    try {
+      final response = await dio.head(
+        path,
+        data: isFormData ? FormData.fromMap(data) : data,
+        queryParameters: queryParameters,
+      );
+      return response;
     } on DioException catch (e) {
       ServerException.handleDioException(e);
     }
