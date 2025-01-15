@@ -2,6 +2,12 @@ class EndPoint {
   static const String baseUrl = 'https://todo.iraqsapp.com/';
   static const String login = 'auth/login';
   static const String register = 'auth/register';
+  static const String logOut = 'auth/logout';
+  static const String refreshToken = 'auth/refresh-token';
+  static const String profile = 'auth/profile';
+  static const String todos = 'todos';
+  static const String uploadImage = 'upload/image';
+  static const String getImage = 'images/';
 }
 
 class ApiKey {
@@ -27,4 +33,13 @@ class ApiKey {
   static const String updatedAt = 'updatedAt';
   static const String v = '__v';
   static const String authorization = 'Authorization';
+  static const String image = 'image';
+  static const String title = 'title';
+  static const String desc = 'desc';
+  static const String priority = 'priority';
+  static const String status = 'status';
+  static const String user = 'user';
+  static const String page = 'page';
+  static const String success = 'success';
+  static const String dueDate = 'dueDate';
 }
