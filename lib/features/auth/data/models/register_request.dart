@@ -8,7 +8,7 @@ class RegisterRequest {
   final String? address;
   final String password;
 
- const RegisterRequest({
+  const RegisterRequest({
     required this.name,
     required this.phone,
     required this.yearOfExperience,

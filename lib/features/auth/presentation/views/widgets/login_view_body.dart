@@ -4,12 +4,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:tasky_app/core/resources/styles_manager.dart';
 import 'package:tasky_app/core/routes/routes.dart';
 import 'package:tasky_app/core/utils/ui_utils.dart';
 import 'package:tasky_app/core/utils/validator.dart';
 import 'package:tasky_app/core/widgets/custom_text_form_field.dart';
-import 'package:tasky_app/features/auth/data/models/login_request.dart';
+import 'package:tasky_app/features/auth/domain/entities/post_login_entity.dart';
 import 'package:tasky_app/features/auth/presentation/view_model/cubit/auth_cubit.dart';
 import 'package:tasky_app/features/auth/presentation/view_model/cubit/auth_states.dart';
 
@@ -32,6 +33,17 @@ class _LoginViewBodyState extends State<LoginViewBody> {
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   String? _fullPhoneNumber;
+  @override
+  void initState() {
+    Future.delayed(const Duration(microseconds: 0), () async {
+      if (await _checkConnection() == false) {
+        if (!mounted) return;
+        UiUtils.showConnectionDialog(context);
+      }
+    });
+    super.initState();
+  }
+
   @override
   void dispose() {
     _phoneController.dispose();
@@ -111,14 +123,22 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                     child: CustomButton(
                         label: AppConstants.signIn,
                         onTap: () {
-                          if (_formKey.currentState!.validate()) {
-                            cubit.login(
-                              LoginRequest(
-                                phone: _fullPhoneNumber!,
-                                password: _passwordController.text,
-                              ),
-                            );
-                          }
+                          Future.delayed(const Duration(microseconds: 0),
+                              () async {
+                            if (await _checkConnection() == false) {
+                              // ignore: use_build_context_synchronously
+                              UiUtils.showConnectionDialog(context);
+                            } else {
+                              if (_formKey.currentState!.validate()) {
+                                cubit.login(
+                                  PostLoginEntity(
+                                    phone: _fullPhoneNumber!,
+                                    password: _passwordController.text,
+                                  ),
+                                );
+                              }
+                            }
+                          });
                         }),
                   ),
                   SizedBox(
@@ -161,5 +181,10 @@ class _LoginViewBodyState extends State<LoginViewBody> {
         ],
       );
     });
+  }
+
+  Future<bool> _checkConnection() async {
+    bool result = await InternetConnection().hasInternetAccess;
+    return result;
   }
 }

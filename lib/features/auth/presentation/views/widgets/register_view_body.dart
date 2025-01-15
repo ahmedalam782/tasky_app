@@ -15,7 +15,7 @@ import 'package:tasky_app/core/widgets/custom_button.dart';
 import 'package:tasky_app/core/widgets/custom_text_form_field.dart';
 import 'package:tasky_app/core/widgets/default_drop_btn.dart';
 import 'package:tasky_app/core/widgets/phone_text_field.dart';
-import 'package:tasky_app/features/auth/data/models/register_request.dart';
+import 'package:tasky_app/features/auth/domain/entities/post_register_entity.dart';
 import 'package:tasky_app/features/auth/presentation/view_model/cubit/auth_cubit.dart';
 import 'package:tasky_app/features/auth/presentation/view_model/cubit/auth_states.dart';
 
@@ -137,7 +137,7 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                               child: Text(
                                 item,
                                 style: getMediumStyle(
-                                    color: ColorManager.black1,
+                                    color: ColorManager.blackThunder,
                                     fontSize: FontSize.s14),
                               ),
                             ))
@@ -172,7 +172,7 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                       label: AppConstants.signUp,
                       onTap: () {
                         if (_formKey.currentState!.validate()) {
-                          cubit.register(RegisterRequest(
+                          cubit.register(PostRegisterEntity(
                             name: _nameController.text,
                             phone: _fullPhoneNumber!,
                             yearOfExperience:

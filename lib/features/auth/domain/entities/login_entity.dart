@@ -1,7 +1,7 @@
 class LoginEntity {
-  String? id;
+  final String? id;
 
-  LoginEntity({
+  const LoginEntity({
     this.id,
   });
 }

@@ -4,6 +4,7 @@ abstract class ApiConsumer {
     dynamic data,
     Map<String, dynamic>? queryParameters,
   });
+
   Future<dynamic> post(
     String path, {
     dynamic data,
@@ -23,6 +24,13 @@ abstract class ApiConsumer {
   });
 
   Future<dynamic> patch(
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+    bool isFormData = false,
+  });
+
+  Future<dynamic> head(
     String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,

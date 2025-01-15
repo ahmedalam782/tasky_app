@@ -10,6 +10,7 @@ class AppTheme {
     fontFamily: 'DMSans',
     primaryColor: ColorManager.primary,
     appBarTheme: AppBarTheme(
+      centerTitle: false,
       backgroundColor: ColorManager.white,
       elevation: 0,
       titleTextStyle: getBoldStyle(

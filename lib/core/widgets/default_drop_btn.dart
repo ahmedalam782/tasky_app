@@ -21,6 +21,8 @@ class DefaultDropBtn extends StatefulWidget {
     this.decoration,
     this.hint = '',
     this.validator,
+    this.icon,
+    this.style,
   });
 
   final String? currentValue;
@@ -36,7 +38,8 @@ class DefaultDropBtn extends StatefulWidget {
   final bool isExpanded;
   final bool isDense;
   final String? Function(String?)? validator;
-
+  final Widget? icon;
+  final TextStyle? style;
   @override
   State<DefaultDropBtn> createState() => _DefaultDropBtnState();
 }
@@ -49,21 +52,30 @@ class _DefaultDropBtnState extends State<DefaultDropBtn> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         widget.label != null
-            ? Text(
-                widget.label!,
-                style: widget.labelTextStyle ??
-                    getBoldStyle(
-                      color: ColorManager.black,
-                      fontSize: FontSize.s18,
-                    ),
+            ? Padding(
+                padding: EdgeInsets.only(top: Insets.s8.h),
+                child: Text(
+                  widget.label!,
+                  style: widget.labelTextStyle ??
+                      getBoldStyle(
+                        color: ColorManager.black,
+                        fontSize: FontSize.s18,
+                      ),
+                ),
+              )
+            : const SizedBox(),
+        widget.label != null
+            ? SizedBox(
+                height: 8.h,
               )
             : const SizedBox(),
         DropdownButtonHideUnderline(
           child: DropdownButtonFormField<String>(
-            style: getBoldStyle(
-              color: ColorManager.black1,
-              fontSize: FontSize.s14,
-            ),
+            style: widget.style ??
+                getBoldStyle(
+                  color: ColorManager.blackThunder,
+                  fontSize: FontSize.s14,
+                ),
             alignment: widget.alignment ?? Alignment.center,
             decoration: widget.decoration ??
                 InputDecoration(
@@ -106,14 +118,15 @@ class _DefaultDropBtnState extends State<DefaultDropBtn> {
             isExpanded: widget.isExpanded,
             hint: Text(widget.hint,
                 style: getMediumStyle(
-                  color: ColorManager.black1,
+                  color: ColorManager.blackThunder,
                   fontSize: FontSize.s14,
                 )),
-            icon: Icon(
-              MdiIcons.chevronDown,
-              size: 24,
-              color: ColorManager.darkGrey1, // Add this
-            ),
+            icon: widget.icon ??
+                Icon(
+                  MdiIcons.chevronDown,
+                  size: 24,
+                  color: ColorManager.darkGrey1, // Add this
+                ),
             value: widget.currentValue,
           ),
         ),

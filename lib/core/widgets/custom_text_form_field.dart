@@ -71,7 +71,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                 child: Text(
                   widget.label!,
                   style: widget.labelTextStyle ??
-                      getMediumStyle(color: ColorManager.white)
+                      getMediumStyle(color: ColorManager.grey3)
                           .copyWith(fontSize: FontSize.s13),
                 ),
               )
@@ -121,7 +121,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               return errorText;
             },
             decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(Insets.s13.sp),
+              contentPadding: EdgeInsets.all(Insets.s16.sp),
               hintText: widget.hint,
               prefixIcon: widget.prefixIcon,
               suffixIcon: widget.isObscured
@@ -129,8 +129,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                       padding: EdgeInsets.symmetric(horizontal: Insets.s16),
                       child: IconButton(
                         onPressed: () => setState(() => hidden = !hidden),
-                        iconSize: Sizes.s24,
-                        splashRadius: Sizes.s10,
+                        iconSize: 24.w,
+                        splashRadius: 10.w,
                         isSelected: !hidden,
                         color: widget.cursorColor,
                         selectedIcon: Icon(

@@ -5,9 +5,9 @@ import 'cache_helper.dart';
 
 @Singleton(as: CacheHelper)
 class SharedPreferencesCashed implements CacheHelper {
-  SharedPreferences instance;
+  final SharedPreferences instance;
 
-  SharedPreferencesCashed(this.instance);
+  const SharedPreferencesCashed(this.instance);
 
   @override
   String? getDataString({required String key}) {
