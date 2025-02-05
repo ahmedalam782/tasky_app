@@ -1,3 +1,4 @@
+// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
@@ -135,14 +136,14 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i1048.ApiConsumer>(),
               gh<_i664.AuthLocalDataSources>(),
             ));
-    gh.lazySingleton<_i4.UploadImage>(
-        () => _i4.UploadImage(gh<_i508.TaskRepository>()));
     gh.lazySingleton<_i469.AddNewTask>(
         () => _i469.AddNewTask(gh<_i508.TaskRepository>()));
     gh.lazySingleton<_i732.EditTask>(
         () => _i732.EditTask(gh<_i508.TaskRepository>()));
     gh.lazySingleton<_i582.DeleteTask>(
         () => _i582.DeleteTask(gh<_i508.TaskRepository>()));
+    gh.lazySingleton<_i4.UploadImage>(
+        () => _i4.UploadImage(gh<_i508.TaskRepository>()));
     gh.factory<_i460.TasksCubit>(() => _i460.TasksCubit(
           gh<_i4.UploadImage>(),
           gh<_i469.AddNewTask>(),

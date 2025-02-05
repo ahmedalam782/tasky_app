@@ -11,9 +11,14 @@ class DioConsumer implements ApiConsumer {
   final Dio dio;
   final AuthLocalDataSources _authLocalDataSources;
 
-  DioConsumer(this.dio, this._authLocalDataSources) {
+  DioConsumer(
+    this.dio,
+    this._authLocalDataSources,
+  ) {
     dio.interceptors.add(
-      ApiInterceptors(_authLocalDataSources),
+      ApiInterceptors(
+        _authLocalDataSources,
+      ),
     ); // For add token in request header of interceptors
     dio.interceptors.add(LogInterceptor(
       request: true,
@@ -118,19 +123,19 @@ class DioConsumer implements ApiConsumer {
   }
 
   @override
-  Future<dynamic> head(
-    String path, {
-    data,
-    Map<String, dynamic>? queryParameters,
-    bool isFormData = false,
-  }) async {
+  Future<dynamic> request(String path,
+      {data,
+      Map<String, dynamic>? queryParameters,
+      bool isFormData = false,
+      Options? options}) async {
     try {
-      final response = await dio.head(
+      final response = await dio.request(
         path,
         data: isFormData ? FormData.fromMap(data) : data,
         queryParameters: queryParameters,
+        options: options,
       );
-      return response;
+      return response.data;
     } on DioException catch (e) {
       ServerException.handleDioException(e);
     }

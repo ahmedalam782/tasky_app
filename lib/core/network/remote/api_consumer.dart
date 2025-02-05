@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 abstract class ApiConsumer {
   Future<dynamic> get(
     String path, {
@@ -30,10 +32,11 @@ abstract class ApiConsumer {
     bool isFormData = false,
   });
 
-  Future<dynamic> head(
+  Future<dynamic> request(
     String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
     bool isFormData = false,
+    Options? options,
   });
 }
