@@ -23,9 +23,11 @@ class OnBoardingViewBody extends StatefulWidget {
 }
 
 class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
+  late AuthCubit _authCubit;
 
   @override
   Widget build(BuildContext context) {
+    _authCubit = AuthCubit.get(context);
     return Stack(
       children: [
         Positioned(
@@ -88,8 +90,8 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
                           // ignore: use_build_context_synchronously
                           UiUtils.showConnectionDialog(context);
                         } else {
-                          // _authCubit.getRefreshToken();
-                          // _authCubit.getNewAccessToken();
+                          _authCubit.getRefreshToken();
+                          _authCubit.getNewAccessToken();
                         }
                       });
                     },
